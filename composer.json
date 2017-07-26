@@ -1,0 +1,19 @@
+{
+    "name": "get-repo/bandcamp-downloader-bundle",
+    "description": "Bandcamp Downloader Bundle",
+    "homepage": "https://github.com/get-repo/bandcamp-downloader-bundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/dom-crawler": "^3.3",
+        "symfony/process": "^3.3",
+        "rg3/youtube-dl": "^2017.07"
+    },
+    "autoload": {
+        "psr-4": {
+            "GetRepo\\BandcampDownloaderBundle\\": ""
+        }
+    },
+    "bin": ["bin/bandcamp-downloader"]
+}
