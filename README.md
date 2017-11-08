@@ -4,7 +4,6 @@
 **Composer**
 ```bash
 composer config repositories.get-repo/bandcamp-downloader-bundle git https://github.com/get-repo/bandcamp-downloader-bundle
-composer config repositories.rg3/youtube-dl '{"type":"package","package":{"name":"rg3/youtube-dl","version":"2017.07.23","dist":{"url":"https://github.com/rg3/youtube-dl/archive/2017.07.23.zip","type":"zip"},"source":{"url":"git@github.com:rg3/youtube-dl.git","type":"git","reference":"tags/2017.07.23"}}}'
 composer require get-repo/bandcamp-downloader-bundle
 ```
 **Update your `./app/AppKernel.php`**
