@@ -7,8 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "symfony/dom-crawler": "^3.3",
-        "symfony/process": "^3.3",
-        "rg3/youtube-dl": "^2017.07"
+        "symfony/process": "^3.3"
     },
     "autoload": {
         "psr-4": {

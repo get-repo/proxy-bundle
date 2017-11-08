@@ -33,8 +33,6 @@ Options:
 ## Configuration Reference
 ```yaml
 bandcamp_downloader:
-    # youtube-dl vendor bin path
-    bin_path: '%kernel.root_dir%/../vendor/rg3/youtube-dl/bin'
     # Albums save path
     save_path: '%kernel.root_dir%/..'
     # CSS selectors

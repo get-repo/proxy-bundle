@@ -23,10 +23,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('bin_path')
-                    ->cannotBeEmpty()
-                    ->defaultValue('%kernel.root_dir%/../vendor/rg3/youtube-dl/bin')
-                ->end()
                 ->scalarNode('save_path')
                     ->cannotBeEmpty()
                     ->defaultValue('%kernel.root_dir%/..')

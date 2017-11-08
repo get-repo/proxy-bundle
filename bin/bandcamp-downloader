@@ -45,13 +45,27 @@ if (!$url = $input->getFirstArgument()) {
     exit;
 }
 
-$savePath = $input->getParameterOption(['-s', '--save-path'], $config['save_path']);
-$output->writeln("Saving in: <comment>{$savePath}</comment>");
-
 if (!$url = $input->getFirstArgument()) {
     $output->writeln('<error>Specify a bandcamp album url as 1st argument</error>');
     exit;
 }
+
+if (($youtubeDlPath = trim(exec('whereis youtube-dl'))) == 'youtube-dl:') {
+    $output->writeln("<error>youtube-dl library could not be found in your system</error>");
+    $output->writeln("<comment>Install it with:</comment>");
+    $output->writeln("sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/bin/youtube-dl");
+    $output->writeln("sudo chmod a+rx /usr/bin/youtube-dl");
+    exit;
+}
+
+$youtubeDlPath = trim(@explode(' ', $youtubeDlPath)[1]);
+if (!$youtubeDlPath || !file_exists($youtubeDlPath)) {
+    $output->writeln("<error>youtube-dl bin could not be found in '{$youtubeDlPath}'</error>");
+    exit;
+}
+
+$savePath = $input->getParameterOption(['-s', '--save-path'], $config['save_path']);
+$output->writeln("Saving in: <comment>{$savePath}</comment>");
 
 $output->write('Fetching... ');
 if (!$html = @file_get_contents($url)) {
@@ -124,7 +138,6 @@ $output->writeln('<info>[OK]</info>');
 // Download tracks
 $i = 1;
 $parsedUrl = parse_url($url);
-$youtubeDlDir = $config['bin_path'];
 $baseDir = getcwd();
 
 foreach ($tracks as $name => $trackLink) {
@@ -136,7 +149,7 @@ foreach ($tracks as $name => $trackLink) {
 
     $fileEscaped = "{$dir}/".str_replace(['"', '/'], ['\"', '-'], "{$nbTrack} {$name}.mp3");
 
-    $cmd = "cd {$youtubeDlDir}; youtube-dl -o\"{$fileEscaped}\" --prefer-ffmpeg '$trackLink'";
+    $cmd = "{$youtubeDlPath} -o\"{$fileEscaped}\" --prefer-ffmpeg '$trackLink'";
     $process = new Process($cmd);
     try {
         $process->run(function ($type, $buffer) use ($output) {
