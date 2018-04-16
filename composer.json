@@ -1,18 +1,15 @@
 {
-    "name": "get-repo/bandcamp-downloader-bundle",
-    "description": "Bandcamp Downloader Bundle",
-    "homepage": "https://github.com/get-repo/bandcamp-downloader-bundle",
+    "name": "get-repo/proxy-bundle",
+    "description": "Proxy Bundle",
+    "homepage": "https://github.com/get-repo/proxy-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9",
-        "symfony/dom-crawler": "^3.3",
-        "symfony/process": "^3.3"
+        "php": ">=5.5.9"
     },
     "autoload": {
         "psr-4": {
-            "GetRepo\\BandcampDownloaderBundle\\": ""
+            "GetRepo\\ProxyBundle\\": ""
         }
-    },
-    "bin": ["bin/bandcamp-downloader"]
+    }
 }
