@@ -20,6 +20,17 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('proxy');
 
+        $rootNode
+            ->children()
+                ->arrayNode('sites')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('url')->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
         return $treeBuilder;
     }
 }
