@@ -1,0 +1,4 @@
+proxy:
+    sites:
+        gimmeproxy:
+            url: gimmeproxy.com
