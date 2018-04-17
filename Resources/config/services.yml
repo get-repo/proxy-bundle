@@ -1,1 +1,4 @@
-
+services:
+    proxy.finder:
+        class: GetRepo\ProxyBundle\ProxyFinder
+        arguments: ['@service_container']

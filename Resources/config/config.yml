@@ -1,4 +1,4 @@
 proxy:
     sites:
         gimmeproxy:
-            url: gimmeproxy.com
+            url: https://gimmeproxy.com/api/getProxy

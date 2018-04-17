@@ -7,6 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -33,15 +35,17 @@ class ProxyExtension extends Extension implements PrependExtensionInterface
 
     public function prepend(ContainerBuilder $container)
     {
-        $yamlParser = new \Symfony\Component\Yaml\Parser();
-        $configs = ($yamlParser->parse(file_get_contents(__DIR__.'/../Resources/config/config.yml'), \Symfony\Component\Yaml\Yaml::PARSE_CONSTANT));
+        $configs = (new Parser())->parse(
+            file_get_contents(__DIR__ . '/../Resources/config/config.yml'),
+            Yaml::PARSE_CONSTANT
+        );
 
-        foreach($configs as $name => $config) {
-            if ($container->hasExtension($name)) {
-                $container->prependExtensionConfig($name, $config);
-            }
+        if ($container->hasExtension('proxy') && isset($configs['proxy'])) {
+            $c = $container->getExtensionConfig('proxy');
+            array_unshift($c, $configs['proxy']);
+            $configuration = new Configuration();
+            $config = $this->processConfiguration($configuration, $c);
+            $container->setParameter('proxy.config', $config);
         }
-
-        $container->setParameter('proxy.config', $configs['proxy']);
     }
 }
