@@ -1,4 +1,9 @@
 proxy:
+    check:
+        timeout: 10
     sites:
         gimmeproxy:
             url: https://gimmeproxy.com/api/getProxy
+            filters:
+                port: port
+                country: country
