@@ -5,7 +5,8 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=5.5.9",
+        "sahusoftcom/proxy-checker": "0.4.*"
     },
     "autoload": {
         "psr-4": {
