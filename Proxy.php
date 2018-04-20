@@ -2,6 +2,8 @@
 
 namespace GetRepo\ProxyBundle;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use SahusoftCom\ProxyChecker\ProxyCheckerService;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -62,6 +64,10 @@ class Proxy
 
     public function call($url)
     {
-        // TODO use guzzle to get response
+        return $client->request(
+            'GET',
+            $url,
+            ['proxy' => ((string) $this)]
+        );
     }
 }

@@ -6,7 +6,8 @@
     "license": "MIT",
     "require": {
         "php": ">=5.5.9",
-        "sahusoftcom/proxy-checker": "0.4.*"
+        "sahusoftcom/proxy-checker": "0.4.*",
+        "guzzlehttp/guzzle": "6.3.*"
     },
     "autoload": {
         "psr-4": {

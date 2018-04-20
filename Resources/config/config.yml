@@ -1,9 +1,21 @@
 proxy:
-    check:
+    default:
+        check: true
         timeout: 10
+        tries: 3
     sites:
         gimmeproxy:
             url: https://gimmeproxy.com/api/getProxy
-            filters:
+            type: json # json/string
+            timeout: 5 # override default
+            tries: 2 # override default
+            paths:
+                ip: ip
                 port: port
-                country: country
+            filters:
+                port: port # integer
+                country: country # string, comma separated
+                protocol: protocol # http/socks4/socks5
+                https: supportsHttps # true/false
+                get: get # true/false
+                post: post # true/false
