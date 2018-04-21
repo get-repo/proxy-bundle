@@ -4,11 +4,12 @@ proxy:
         timeout: 10
         tries: 3
     sites:
-        gimmeproxy:
+        gimmeproxy: # https://gimmeproxy.com/#api
             url: https://gimmeproxy.com/api/getProxy
             type: json # json/string
-            timeout: 5 # override default
-            tries: 2 # override default
+            check: false # override default
+            timeout: 10 # override default
+            tries: 3 # override default
             paths:
                 ip: ip
                 port: port
@@ -19,3 +20,19 @@ proxy:
                 https: supportsHttps # true/false
                 get: get # true/false
                 post: post # true/false
+        pubproxy: # http://pubproxy.com/#settings
+            url: http://pubproxy.com/api/proxy
+            type: json # json/string
+            check: false # override default
+            timeout: 10 # override default
+            tries: 3 # override default
+            paths:
+                ip: data.0.ip
+                port: data.0.port
+            filters:
+                port: port
+                country: country
+                protocol: type
+                https: https
+                get: get
+                post: post

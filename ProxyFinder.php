@@ -2,6 +2,7 @@
 
 namespace GetRepo\ProxyBundle;
 
+use GuzzleHttp\Client;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -106,12 +107,12 @@ class ProxyFinder
                 if ($response) {
                     $ip = $this->accessor->getValue(
                         $response,
-                        '[' . $this->accessor->getValue($site, '[paths][ip]') . ']'
-                        );
+                        $this->getPropertyPath($site, 'ip')
+                    );
                     $port = $this->accessor->getValue(
                         $response,
-                        '[' . $this->accessor->getValue($site, '[paths][port]') . ']'
-                        );
+                        $this->getPropertyPath($site, 'port')
+                    );
 
                     if ($ip && $port) {
                         $proxy = new Proxy($ip, $port);
@@ -133,41 +134,35 @@ class ProxyFinder
         return $this->accessor->getValue($this->config, $path);
     }
 
+    private function getPropertyPath($site, $path)
+    {
+        return '[' . implode('][', explode(
+            '.',
+            $this->accessor->getValue($site, "[paths][{$path}]")
+        )) . ']';
+    }
+
     private function getResponse(array $site)
     {
         $type = $this->accessor->getValue($site, '[type]');
 
         switch ($type) {
             case self::TYPE_JSON:
-                // TODO use guzzle
-                $json = '{
-  "supportsHttps": true,
-  "protocol": "socks5",
-  "ip": "54.36.153.32",
-  "port": "1080",
-  "get": true,
-  "post": true,
-  "cookies": true,
-  "referer": true,
-  "user-agent": true,
-  "anonymityLevel": 1,
-  "websites": {
-    "example": true,
-    "google": false,
-    "amazon": false,
-    "yelp": false,
-    "google_maps": false
-  },
-  "country": "FR",
-  "tsChecked": 1524174639,
-  "curl": "socks5://54.36.153.32:1080",
-  "ipPort": "54.36.153.32:1080",
-  "type": "socks5",
-  "speed": 32.22,
-  "otherProtocols": {}
-}';
-                $response = json_decode($json, true);
-                // $response = json_decode(file_get_contents($site['url']), true);
+                try {
+                    $response = (new Client())->request(
+                        'GET',
+                        $site['url']
+                    );
+
+                    if (200 != ($code = $response->getStatusCode())) {
+                        throw new \Exception("Returned HTTP code {$code}");
+                    }
+
+                    $response = json_decode((string) $response->getBody(), true);
+                } catch (\Exception $e) {
+                    $response = false;
+                }
+
                 break;
 
             default:

@@ -3,7 +3,6 @@
 namespace GetRepo\ProxyBundle;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use SahusoftCom\ProxyChecker\ProxyCheckerService;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -62,10 +61,17 @@ class Proxy
         return false;
     }
 
-    public function call($url)
+    /**
+     * @param string $uri
+     * @param string $method
+     * @param array  $options
+     *
+     * @return \GuzzleHttp\Psr7\Response
+     */
+    public function request($url, $method = 'GET', array $options = [])
     {
-        return $client->request(
-            'GET',
+        return (new Client())->request(
+            $method,
             $url,
             ['proxy' => ((string) $this)]
         );
